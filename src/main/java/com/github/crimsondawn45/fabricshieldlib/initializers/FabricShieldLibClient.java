@@ -1,13 +1,10 @@
 package com.github.crimsondawn45.fabricshieldlib.initializers;
 
 import com.github.crimsondawn45.fabricshieldlib.lib.config.FabricShieldLibConfig;
-import com.github.crimsondawn45.fabricshieldlib.lib.event.ShieldSetModelCallback;
 import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldUtils;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -23,7 +20,6 @@ import net.minecraft.component.type.BannerPatternsComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -39,7 +35,6 @@ public class FabricShieldLibClient implements ClientModInitializer {
      * Will be made by user (dev code).
      */
     public static final EntityModelLayer fabric_banner_shield_model_layer = new EntityModelLayer(Identifier.of(FabricShieldLib.MOD_ID, "fabric_banner_shield"),"main");
-    public static ShieldEntityModel modelFabricShield;
     @SuppressWarnings("deprecation")
     public static final SpriteIdentifier FABRIC_BANNER_SHIELD_BASE = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FabricShieldLib.MOD_ID, "entity/fabric_banner_shield_base"));
     @SuppressWarnings("deprecation")
@@ -60,25 +55,13 @@ public class FabricShieldLibClient implements ClientModInitializer {
 			}
 		});
 
-        if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
+		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			// Warn about dev code
+			FabricShieldLib.logger.warn("FABRIC SHIELD LIB DEVELOPMENT CODE RAN!!!, if you are not in a development environment this is very bad! Client side banner code ran!");
 
-            //Warn about dev code
-            FabricShieldLib.logger.warn("FABRIC SHIELD LIB DEVELOPMENT CODE RAN!!!, if you are not in a development environment this is very bad! Client side banner code ran!");
-
-            //Registers sprite directories and model layer, will be done by player, dev code
-            EntityModelLayerRegistry.registerModelLayer(fabric_banner_shield_model_layer, ShieldEntityModel::getTexturedModelData);
-
-            //Set model
-            ShieldSetModelCallback.EVENT.register((loader) -> {
-                modelFabricShield = new ShieldEntityModel(loader.getModelPart(FabricShieldLibClient.fabric_banner_shield_model_layer));
-                return ActionResult.PASS;
-            });
-
-            //Register renderer
-            BuiltinItemRendererRegistry.INSTANCE.register(FabricShieldLib.fabric_banner_shield, (stack, mode, matrices, vertexConsumers, light, overlay) -> {
-                renderBanner(stack, matrices, vertexConsumers, light, overlay, modelFabricShield, FABRIC_BANNER_SHIELD_BASE, FABRIC_BANNER_SHIELD_BASE_NO_PATTERN);
-            });
-        }
+			FabricShieldUtils.registerShieldWithPatternOnClient(FabricShieldLib.fabric_banner_shield,
+					fabric_banner_shield_model_layer, FABRIC_BANNER_SHIELD_BASE, FABRIC_BANNER_SHIELD_BASE_NO_PATTERN);
+		}
     }
 
     /**
