@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Mixin that allows custom shields to block damage.
  */
-@SuppressWarnings("ALL")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
 	@Inject(

@@ -2,12 +2,14 @@ package com.github.crimsondawn45.fabricshieldlib.mixin;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.util.Unit;
 
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Slice;
 
+import com.github.crimsondawn45.fabricshieldlib.initializers.FabricShieldDataComponents;
 import com.github.crimsondawn45.fabricshieldlib.lib.config.FabricShieldLibConfig;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 
@@ -23,6 +25,8 @@ public class ItemsMixin {
 					to = @At(value = "FIELD", opcode = Opcodes.PUTSTATIC, target = "Lnet/minecraft/item/Items;SHIELD:Lnet/minecraft/item/Item;")),
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item$Settings;equippableUnswappable(Lnet/minecraft/entity/EquipmentSlot;)Lnet/minecraft/item/Item$Settings;"))
 	private static Item.Settings assignVanillaShieldEnchantability(Item.Settings settings) {
-		return settings.enchantable(FabricShieldLibConfig.vanilla_shield_enchantability);
+		return settings
+				.enchantable(FabricShieldLibConfig.vanilla_shield_enchantability)
+				.component(FabricShieldDataComponents.SHOW_COOLDOWN_TICKS, Unit.INSTANCE);
 	}
 }

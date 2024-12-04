@@ -22,6 +22,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Unit;
 import net.minecraft.world.World;
 
 import java.util.Arrays;
@@ -30,13 +31,12 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.github.crimsondawn45.fabricshieldlib.initializers.FabricShieldDataComponents;
+
 /**
  * Pre-made class for quickly making custom shields.
  */
-public class FabricShieldItem extends Item implements FabricShield {
-
-	private int coolDownTicks;
-
+public class FabricShieldItem extends Item {
     /**
      * @param settings       item settings.
      * @param coolDownTicks  ticks shield will be disabled for when it with axe. Vanilla: 100
@@ -74,7 +74,12 @@ public class FabricShieldItem extends Item implements FabricShield {
      * @param repairItems    list of items/tags for repairing shield.
      */
     public FabricShieldItem(Settings settings, int coolDownTicks, int enchantability, @Nullable RegistryEntryList<Item> repairItems) {
-        super((repairItems == null ? settings : settings.component(DataComponentTypes.REPAIRABLE, new RepairableComponent(repairItems))).enchantable(enchantability).equippableUnswappable(EquipmentSlot.OFFHAND));
+		super((repairItems == null ? settings : settings.component(DataComponentTypes.REPAIRABLE, new RepairableComponent(repairItems)))
+				.enchantable(enchantability)
+				.equippableUnswappable(EquipmentSlot.OFFHAND)
+				.component(FabricShieldDataComponents.COOLDOWN_TICKS, coolDownTicks)
+				.component(FabricShieldDataComponents.SHOW_COOLDOWN_TICKS, Unit.INSTANCE)
+			);
 
         //Register dispenser equip behavior
         // TODO: This is no longer necessary if this item has DataComponentTypes.EQUIPPABLE
@@ -84,8 +89,6 @@ public class FabricShieldItem extends Item implements FabricShield {
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             this.RegisterModelPredicate();
         }
-
-        this.coolDownTicks = coolDownTicks;
     }
 
     private void RegisterModelPredicate() {
@@ -96,11 +99,6 @@ public class FabricShieldItem extends Item implements FabricShield {
 
     @Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
-    }
-
-    @Override
-    public int getCoolDownTicks() {
-        return this.coolDownTicks;
     }
 
     @Override
@@ -117,9 +115,5 @@ public class FabricShieldItem extends Item implements FabricShield {
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         user.setCurrentHand(hand);
         return ActionResult.CONSUME;
-    }
-
-    public void setCoolDownTicks(int coolDownTicks) {
-        this.coolDownTicks = coolDownTicks;
     }
 }

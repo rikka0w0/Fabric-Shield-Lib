@@ -5,25 +5,40 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.RegistryWrapper.WrapperLookup;
 import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
 
 public class FabricShieldLibDataGenerator implements DataGeneratorEntrypoint {
+	@Override
+	public void onInitializeDataGenerator(FabricDataGenerator generator) {
+		FabricDataGenerator.Pack pack = generator.createPack();
+		pack.addProvider(EnchantmentGenerator::new);
+		pack.addProvider(ItemTagGenerator::new);
+	}
 
-    @Override
-    public void onInitializeDataGenerator(FabricDataGenerator generator) {
-        FabricDataGenerator.Pack pack = generator.createPack();
-        pack.addProvider(EnchantmentGenerator::new);
-    }
+	public static class ItemTagGenerator extends FabricTagProvider<Item> {
+		public ItemTagGenerator(FabricDataOutput output, CompletableFuture<WrapperLookup> registriesFuture) {
+			super(output, RegistryKeys.ITEM, registriesFuture);
+		}
 
+		@Override
+		protected void configure(RegistryWrapper.WrapperLookup lookup) {
+			this.getOrCreateTagBuilder(ConventionalItemTags.SHIELD_TOOLS)
+				.add(FabricShieldLib.fabric_banner_shield)
+				.add(FabricShieldLib.fabric_shield);
+		}
+	}
 
     public static class EnchantmentGenerator extends FabricDynamicRegistryProvider {
         public static final RegistryKey<Enchantment> REFLECTION = EnchantmentGenerator.of("reflect");

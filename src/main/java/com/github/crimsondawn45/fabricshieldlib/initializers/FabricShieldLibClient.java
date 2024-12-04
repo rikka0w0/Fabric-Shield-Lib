@@ -2,7 +2,8 @@ package com.github.crimsondawn45.fabricshieldlib.initializers;
 
 import com.github.crimsondawn45.fabricshieldlib.lib.config.FabricShieldLibConfig;
 import com.github.crimsondawn45.fabricshieldlib.lib.event.ShieldSetModelCallback;
-import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShield;
+import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldUtils;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
@@ -20,7 +21,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BannerPatternsComponent;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -47,34 +47,18 @@ public class FabricShieldLibClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-
-        /*
-         * Register tooltip callback this is the same as mixing into the end of:
-         * ItemStack.getTooltip()
-         */
-        ItemTooltipCallback.EVENT.register((stack, context, type, tooltip) -> {
-
-            if(FabricShieldLibConfig.enable_tooltips) {
-
-                if(stack.getItem() instanceof FabricShield) {
-
-                    FabricShield shield = (FabricShield) stack.getItem();
-
-                    //Add any custom tooltips
-                    shield.appendTooltip(stack, context, tooltip, type);
-
-                    //Add cooldown tooltip
-                    if(shield.displayTooltip()) {
-                        getCooldownTooltip(stack, type ,tooltip, shield.getCoolDownTicks());
-                    }
-                }
-
-                //Display tooltip for vanilla shield
-                if(stack.getItem().equals(Items.SHIELD)) {
-                    getCooldownTooltip(stack, type,tooltip, 100);
-                }
-            }
-        });
+		/*
+		 * Register tooltip callback this is the same as mixing into the end of:
+		 * ItemStack.getTooltip()
+		 */
+		ItemTooltipCallback.EVENT.register((stack, context, type, tooltip) -> {
+			if (FabricShieldLibConfig.enable_tooltips) {
+				// Add cooldown tooltip
+				if (stack.get(FabricShieldDataComponents.SHOW_COOLDOWN_TICKS) != null) {
+					getCooldownTooltip(stack, type, tooltip, FabricShieldUtils.getCooldownTicks(stack));
+				}
+			}
+		});
 
         if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
 
