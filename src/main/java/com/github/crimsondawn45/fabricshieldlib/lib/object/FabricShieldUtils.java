@@ -15,6 +15,9 @@ import net.minecraft.sound.SoundEvents;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Everything in this class will remain binary-compatible to the maximum extent.
+ */
 public class FabricShieldUtils {
 	public static final int VANILLA_SHIELD_DURABILITY = 336;
 	public static final BlocksAttacksComponent VANILLA_SHIELD_BLOCKS_ATTACKS_COMPONENT =

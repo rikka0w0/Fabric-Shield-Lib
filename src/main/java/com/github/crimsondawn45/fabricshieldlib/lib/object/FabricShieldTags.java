@@ -7,9 +7,19 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 
+/**
+ * Everything in this class will remain binary-compatible to the maximum extent.
+ */
 public class FabricShieldTags {
-	public static final TagKey<Item> SHOW_TOOLTIP =
-		TagKey.of(RegistryKeys.ITEM, Identifier.of(FabricShieldLib.MOD_ID, "show_tooltip"));
+	/**
+	 * Indicate if a shield supports banners or not.
+	 * <p>
+	 * Add your modded shield to this tag if it supports banners.
+	 * <p>
+	 * {@link FabricShieldDecoratorRecipe} covers all shields with this tag,
+	 * with the exception of the vanilla shield (handled by
+	 * {@link net.minecraft.recipe.ShieldDecorationRecipe}
+	 */
 	public static final TagKey<Item> SUPPORTS_BANNER =
 		TagKey.of(RegistryKeys.ITEM, Identifier.of(FabricShieldLib.MOD_ID, "supports_banner"));
 }
