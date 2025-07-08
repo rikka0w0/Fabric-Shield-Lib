@@ -34,13 +34,13 @@ public class FabricShieldLibTests {
 	/**
 	 * Test shield item that does not support banners.
 	 */
-	private final static FabricShieldItem FABRIC_SHIELD = registerItem("fabric_shield",
+	protected final static FabricShieldItem FABRIC_SHIELD = registerItem("fabric_shield",
 		(props) -> new FabricShieldItem(props.maxDamage(200), 100, 9, Items.OAK_PLANKS, Items.SPRUCE_PLANKS));
 
 	/**
 	 * Test shield item that supports banners.
 	 */
-	private final static FabricShieldItem FABRIC_BANNER_SHIELD = registerItem("fabric_banner_shield",
+	protected final static FabricShieldItem FABRIC_BANNER_SHIELD = registerItem("fabric_banner_shield",
 		(props) -> new FabricShieldItem(props
 				.maxDamage(FabricShieldUtils.VANILLA_SHIELD_DURABILITY)
 			, 85, 9, Items.OAK_PLANKS, Items.SPRUCE_PLANKS));
@@ -48,7 +48,7 @@ public class FabricShieldLibTests {
 	/**
 	 * Test shield item using the {@link BlocksAttacksComponent}
 	 */
-	private final static FabricShieldItem FABRIC_COMPONENT_SHIELD = registerItem("fabric_component_shield",
+	protected final static FabricShieldItem FABRIC_COMPONENT_SHIELD = registerItem("fabric_component_shield",
 		(props) -> new FabricShieldItem(props.maxDamage(100)
 			.component(DataComponentTypes.BLOCKS_ATTACKS,
 				new BlocksAttacksComponent(0.25F, 150F / 100F,
