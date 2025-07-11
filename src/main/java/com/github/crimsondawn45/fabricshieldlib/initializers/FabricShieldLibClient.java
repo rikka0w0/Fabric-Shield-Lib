@@ -2,12 +2,13 @@ package com.github.crimsondawn45.fabricshieldlib.initializers;
 
 import com.github.crimsondawn45.fabricshieldlib.lib.config.FabricShieldLibConfig;
 import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShield;
+import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldModelRenderer;
 import com.github.crimsondawn45.fabricshieldlib.tests.FabricShieldLibClientTests;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.loader.api.FabricLoader;
-
+import net.minecraft.client.render.item.model.special.SpecialModelTypes;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlocksAttacksComponent;
 import net.minecraft.item.ItemStack;
@@ -20,8 +21,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FabricShieldLibClient implements ClientModInitializer {
+	/**
+	 * In item model JSON: ROOT.model.CONDITION.model.type
+	 */
+	public static final Identifier FABRIC_BANNER_SHIELD_MODEL_TYPE =
+		Identifier.of(FabricShieldLib.MOD_ID, "fabric_banner_shield");
+
 	@Override
 	public void onInitializeClient() {
+		/*
+		 * Register our SpecialModelRenderer, to be used for all modded shields that
+		 * support banner. Of course, the user can implement a custom SpecialModelRenderer.
+		 */
+		SpecialModelTypes.ID_MAPPER.put(
+			FABRIC_BANNER_SHIELD_MODEL_TYPE,
+			FabricShieldModelRenderer.Unbaked.CODEC
+		);
+
 		/*
 		 * Register tooltip callback this is the same as mixing into the end of:
 		 * ItemStack.getTooltip()

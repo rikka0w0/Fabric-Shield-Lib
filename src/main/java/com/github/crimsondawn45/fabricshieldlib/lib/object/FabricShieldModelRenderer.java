@@ -1,13 +1,15 @@
 package com.github.crimsondawn45.fabricshieldlib.lib.object;
 
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BannerBlockEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.LoadedEntityModels;
 import net.minecraft.client.render.entity.model.ShieldEntityModel;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -86,38 +88,29 @@ public class FabricShieldModelRenderer implements SpecialModelRenderer<Component
 		this.model.getRootPart().collectVertices(matrixStack, vertices);
 	}
 
-	public static class UnbakedInstance {
-		public final Identifier baseModel, baseModelNoPat;
-		public final EntityModelLayer entityModelLayer;
-		public final Unbaked instance;
-		public final MapCodec<UnbakedInstance.Unbaked> codec;
+	public record Unbaked(Identifier baseModel, Identifier baseModelNoPat) implements SpecialModelRenderer.Unbaked {
+		public static final MapCodec<FabricShieldModelRenderer.Unbaked> CODEC = RecordCodecBuilder.mapCodec(
+			instance -> instance.group(
+					Identifier.CODEC.fieldOf("texture_banner").forGetter(FabricShieldModelRenderer.Unbaked::baseModel),
+					Identifier.CODEC.fieldOf("texture_default").forGetter(FabricShieldModelRenderer.Unbaked::baseModel)
+				)
+				.apply(instance, FabricShieldModelRenderer.Unbaked::new)
+		);
 
-		public UnbakedInstance(Identifier baseModel, Identifier baseModelNoPat, EntityModelLayer entityModelLayer) {
-			this.baseModel = baseModel;
-			this.baseModelNoPat = baseModelNoPat;
-			this.entityModelLayer = entityModelLayer;
-			this.instance = new Unbaked();
-			this.codec = MapCodec.unit(this.instance);
+		@Override
+		public MapCodec<FabricShieldModelRenderer.Unbaked> getCodec() {
+			return CODEC;
 		}
 
-		public class Unbaked implements SpecialModelRenderer.Unbaked {
-			private Unbaked() {}
-
-			@Override
-			public MapCodec<Unbaked> getCodec() {
-				return UnbakedInstance.this.codec;
-			}
-
-			@Override
-			public SpecialModelRenderer<?> bake(LoadedEntityModels entityModels) {
-				ModelPart modelPart = entityModels.getModelPart(UnbakedInstance.this.entityModelLayer);
-				ShieldEntityModel model = new ShieldEntityModel(modelPart);
-				return new FabricShieldModelRenderer(
-					UnbakedInstance.this.baseModel,
-					UnbakedInstance.this.baseModelNoPat,
-					model
-				);
-			}
+		@Override
+		public SpecialModelRenderer<?> bake(LoadedEntityModels entityModels) {
+			ModelPart modelPart = entityModels.getModelPart(EntityModelLayers.SHIELD);
+			ShieldEntityModel model = new ShieldEntityModel(modelPart);
+			return new FabricShieldModelRenderer(
+				this.baseModel,
+				this.baseModelNoPat,
+				model
+			);
 		}
 	}
 }
