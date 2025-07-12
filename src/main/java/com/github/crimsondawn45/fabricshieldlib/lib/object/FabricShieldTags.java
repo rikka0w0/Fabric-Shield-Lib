@@ -22,4 +22,18 @@ public class FabricShieldTags {
 	 */
 	public static final TagKey<Item> SUPPORTS_BANNER =
 		TagKey.of(RegistryKeys.ITEM, Identifier.of(FabricShieldLib.MOD_ID, "supports_banner"));
+
+	/**
+	 * Explicitly disable advanced tooltip for a given set of shields.
+	 * <p>
+	 * FabricShieldLib will add an advanced tooltip to indicate the cooling time when disabled by an axe.
+	 * <p>
+	 * By default, this tooltip is added to shields, including both vanilla and modded.
+	 * The global switch is {@link com.github.crimsondawn45.fabricshieldlib.lib.config.FabricShieldLibConfig#enable_tooltips}.
+	 * If a shield is not in this tag, the advanced tooltip will be visible.
+	 * <p>
+	 * Replaces `FabricShield::displayTooltip`
+	 */
+	public static final TagKey<Item> NO_TOOLTIP =
+		TagKey.of(RegistryKeys.ITEM, Identifier.of(FabricShieldLib.MOD_ID, "no_tooltip"));
 }

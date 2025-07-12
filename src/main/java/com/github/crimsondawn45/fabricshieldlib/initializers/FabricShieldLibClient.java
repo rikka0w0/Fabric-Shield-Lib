@@ -1,8 +1,8 @@
 package com.github.crimsondawn45.fabricshieldlib.initializers;
 
 import com.github.crimsondawn45.fabricshieldlib.lib.config.FabricShieldLibConfig;
-import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShield;
 import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldModelRenderer;
+import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldTags;
 import com.github.crimsondawn45.fabricshieldlib.tests.FabricShieldLibClientTests;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -46,11 +46,7 @@ public class FabricShieldLibClient implements ClientModInitializer {
 			if (!FabricShieldLibConfig.enable_tooltips)
 				return;
 
-			boolean displayTooltip = true;
-			if (stack.getItem() instanceof FabricShield) {
-				FabricShield shield = (FabricShield) stack.getItem();
-				displayTooltip = shield.displayTooltip();
-			}
+			boolean displayTooltip = !stack.isIn(FabricShieldTags.NO_TOOLTIP);
 
 			// Display tooltip for shields
 			BlocksAttacksComponent shield = stack.get(DataComponentTypes.BLOCKS_ATTACKS);

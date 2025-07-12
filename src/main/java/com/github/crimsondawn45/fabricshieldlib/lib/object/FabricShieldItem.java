@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * Pre-made class for quickly making custom shields.
  */
-public class FabricShieldItem extends Item implements FabricShield {
+public class FabricShieldItem extends Item {
 	/**
 	 * @param settings       item settings.
 	 * @param coolDownTicks  ticks shield will be disabled for when it with axe. Vanilla: 100
