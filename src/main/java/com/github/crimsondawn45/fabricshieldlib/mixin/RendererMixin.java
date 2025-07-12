@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Handles rendering of shields with banners.
  */
+@Deprecated
 @Mixin(ShieldModelRenderer.Unbaked.class)
 public class RendererMixin {
 	/**

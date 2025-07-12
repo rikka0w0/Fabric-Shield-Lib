@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.render.entity.model.LoadedEntityModels;
 import net.minecraft.util.ActionResult;
 
+@Deprecated
 public interface ShieldSetModelCallback {
 	/**
 	 * Handle event listeners.
