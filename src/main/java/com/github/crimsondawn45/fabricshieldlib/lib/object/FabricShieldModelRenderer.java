@@ -92,7 +92,7 @@ public class FabricShieldModelRenderer implements SpecialModelRenderer<Component
 		public static final MapCodec<FabricShieldModelRenderer.Unbaked> CODEC = RecordCodecBuilder.mapCodec(
 			instance -> instance.group(
 					Identifier.CODEC.fieldOf("texture_banner").forGetter(FabricShieldModelRenderer.Unbaked::baseModel),
-					Identifier.CODEC.fieldOf("texture_default").forGetter(FabricShieldModelRenderer.Unbaked::baseModel)
+					Identifier.CODEC.fieldOf("texture_default").forGetter(FabricShieldModelRenderer.Unbaked::baseModelNoPat)
 				)
 				.apply(instance, FabricShieldModelRenderer.Unbaked::new)
 		);
