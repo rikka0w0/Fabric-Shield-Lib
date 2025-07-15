@@ -4,7 +4,6 @@ import com.github.crimsondawn45.fabricshieldlib.lib.config.FabricShieldLibConfig
 import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldModelRenderer;
 import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldTags;
 import com.github.crimsondawn45.fabricshieldlib.tests.FabricShieldLibClientTests;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.loader.api.FabricLoader;

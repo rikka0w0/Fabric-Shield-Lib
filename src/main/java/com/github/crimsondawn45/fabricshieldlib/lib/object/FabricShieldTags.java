@@ -1,7 +1,7 @@
 package com.github.crimsondawn45.fabricshieldlib.lib.object;
 
 import com.github.crimsondawn45.fabricshieldlib.initializers.FabricShieldLib;
-
+import com.github.crimsondawn45.fabricshieldlib.mixin.RecipeMixin;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
@@ -16,12 +16,10 @@ public class FabricShieldTags {
 	 * <p>
 	 * Add your modded shield to this tag if it supports banners.
 	 * <p>
-	 * {@link FabricShieldDecoratorRecipe} covers all shields with this tag,
-	 * with the exception of the vanilla shield (handled by
-	 * {@link net.minecraft.recipe.ShieldDecorationRecipe}
+	 * {@link RecipeMixin} covers includes all shields in this tag into {@link net.minecraft.recipe.ShieldDecorationRecipe}
 	 */
 	public static final TagKey<Item> SUPPORTS_BANNER =
-		TagKey.of(RegistryKeys.ITEM, Identifier.of(FabricShieldLib.MOD_ID, "supports_banner"));
+			TagKey.of(RegistryKeys.ITEM, Identifier.of(FabricShieldLib.MOD_ID, "supports_banner"));
 
 	/**
 	 * Explicitly disable advanced tooltip for a given set of shields.
@@ -35,5 +33,5 @@ public class FabricShieldTags {
 	 * Replaces `FabricShield::displayTooltip`
 	 */
 	public static final TagKey<Item> NO_TOOLTIP =
-		TagKey.of(RegistryKeys.ITEM, Identifier.of(FabricShieldLib.MOD_ID, "no_tooltip"));
+			TagKey.of(RegistryKeys.ITEM, Identifier.of(FabricShieldLib.MOD_ID, "no_tooltip"));
 }

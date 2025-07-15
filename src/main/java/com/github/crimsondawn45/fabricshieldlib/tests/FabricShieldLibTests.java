@@ -1,15 +1,10 @@
 package com.github.crimsondawn45.fabricshieldlib.tests;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
 import com.github.crimsondawn45.fabricshieldlib.initializers.FabricShieldLib;
 import com.github.crimsondawn45.fabricshieldlib.lib.event.ShieldBlockCallback;
 import com.github.crimsondawn45.fabricshieldlib.lib.event.ShieldDisabledCallback;
 import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldItem;
 import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldUtils;
-
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlocksAttacksComponent;
@@ -24,6 +19,10 @@ import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * These are test codes used internally by FabricShieldLib developers.
