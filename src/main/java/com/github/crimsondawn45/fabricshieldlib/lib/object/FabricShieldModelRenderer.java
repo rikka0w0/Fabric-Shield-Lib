@@ -80,13 +80,6 @@ public class FabricShieldModelRenderer implements SpecialModelRenderer<Component
 		}
 	}
 
-	@Override
-	public void collectVertices(Set<Vector3f> vertices) {
-		MatrixStack matrixStack = new MatrixStack();
-		matrixStack.scale(1.0F, -1.0F, -1.0F);
-		this.model.getRootPart().collectVertices(matrixStack, vertices);
-	}
-
 	public record Unbaked(Identifier baseModel, Identifier baseModelNoPat) implements SpecialModelRenderer.Unbaked {
 		public static final MapCodec<FabricShieldModelRenderer.Unbaked> CODEC = RecordCodecBuilder.mapCodec(
 			instance -> instance.group(
