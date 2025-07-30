@@ -2,7 +2,6 @@ package com.github.crimsondawn45.fabricshieldlib.lib.object;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
@@ -47,11 +46,11 @@ public class FabricShieldModelRenderer implements SpecialModelRenderer<Component
 	}
 
 	public void render(
-		@Nullable ComponentMap componentMap, ItemDisplayContext displayContext, MatrixStack matrixStack,
-		VertexConsumerProvider vertexConsumerProvider, int i, int j, boolean bl
+			@Nullable ComponentMap componentMap, ItemDisplayContext displayContext, MatrixStack matrixStack,
+			VertexConsumerProvider vertexConsumerProvider, int i, int j, boolean bl
 	) {
 		BannerPatternsComponent bannerPatternsComponent = componentMap == null ? BannerPatternsComponent.DEFAULT:
-			(BannerPatternsComponent) componentMap.getOrDefault(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT);
+				(BannerPatternsComponent) componentMap.getOrDefault(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT);
 
 		DyeColor dyeColor = componentMap == null ? null : (DyeColor) componentMap.get(DataComponentTypes.BASE_COLOR);
 
@@ -63,16 +62,16 @@ public class FabricShieldModelRenderer implements SpecialModelRenderer<Component
 		try {
 			@SuppressWarnings("deprecation")
 			SpriteIdentifier spriteIdentifier = bl2
-				? new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, this.baseModel)
-				: new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, this.baseModelNoPat);
+					? new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, this.baseModel)
+					: new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, this.baseModelNoPat);
 			VertexConsumer vertexConsumer = spriteIdentifier.getSprite()
-				.getTextureSpecificVertexConsumer(ItemRenderer.getItemGlintConsumer(vertexConsumerProvider,
-					model.getLayer(spriteIdentifier.getAtlasId()), displayContext == ItemDisplayContext.GUI, bl));
+					.getTextureSpecificVertexConsumer(ItemRenderer.getItemGlintConsumer(vertexConsumerProvider,
+							model.getLayer(spriteIdentifier.getAtlasId()), displayContext == ItemDisplayContext.GUI, bl));
 			model.getHandle().render(matrixStack, vertexConsumer, i, j);
 			if (bl2) {
 				BannerBlockEntityRenderer.renderCanvas(matrixStack, vertexConsumerProvider, i, j, model.getPlate(),
-					spriteIdentifier, false, (DyeColor) Objects.requireNonNullElse(dyeColor, DyeColor.WHITE),
-					bannerPatternsComponent, bl, false);
+						spriteIdentifier, false, (DyeColor) Objects.requireNonNullElse(dyeColor, DyeColor.WHITE),
+						bannerPatternsComponent, bl, false);
 			} else {
 				model.getPlate().render(matrixStack, vertexConsumer, i, j);
 			}
@@ -90,11 +89,11 @@ public class FabricShieldModelRenderer implements SpecialModelRenderer<Component
 
 	public record Unbaked(Identifier baseModel, Identifier baseModelNoPat) implements SpecialModelRenderer.Unbaked {
 		public static final MapCodec<FabricShieldModelRenderer.Unbaked> CODEC = RecordCodecBuilder.mapCodec(
-			instance -> instance.group(
-					Identifier.CODEC.fieldOf("texture_banner").forGetter(FabricShieldModelRenderer.Unbaked::baseModel),
-					Identifier.CODEC.fieldOf("texture_default").forGetter(FabricShieldModelRenderer.Unbaked::baseModelNoPat)
-				)
-				.apply(instance, FabricShieldModelRenderer.Unbaked::new)
+				instance -> instance.group(
+								Identifier.CODEC.fieldOf("texture_banner").forGetter(FabricShieldModelRenderer.Unbaked::baseModel),
+								Identifier.CODEC.fieldOf("texture_default").forGetter(FabricShieldModelRenderer.Unbaked::baseModelNoPat)
+						)
+						.apply(instance, FabricShieldModelRenderer.Unbaked::new)
 		);
 
 		@Override
@@ -107,9 +106,9 @@ public class FabricShieldModelRenderer implements SpecialModelRenderer<Component
 			ModelPart modelPart = entityModels.getModelPart(EntityModelLayers.SHIELD);
 			ShieldEntityModel model = new ShieldEntityModel(modelPart);
 			return new FabricShieldModelRenderer(
-				this.baseModel,
-				this.baseModelNoPat,
-				model
+					this.baseModel,
+					this.baseModelNoPat,
+					model
 			);
 		}
 	}
