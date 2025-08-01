@@ -10,6 +10,7 @@
     "RecipeMixin"
   ],
   "client": [
+    "BlocksAttacksComponentMixin",
     "HeldItemRendererMixin",
     "RendererMixin"
   ],

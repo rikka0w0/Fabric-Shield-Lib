@@ -1,23 +1,19 @@
 package com.github.crimsondawn45.fabricshieldlib.initializers;
 
 import com.github.crimsondawn45.fabricshieldlib.lib.config.FabricShieldLibConfig;
+import com.github.crimsondawn45.fabricshieldlib.lib.object.BlockAttacksTooltip;
 import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldModelRenderer;
 import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldTags;
 import com.github.crimsondawn45.fabricshieldlib.tests.FabricShieldLibClientTests;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.item.v1.ComponentTooltipAppenderRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.item.model.special.SpecialModelTypes;
+import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlocksAttacksComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.item.tooltip.TooltipAppender;
 import net.minecraft.util.Identifier;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FabricShieldLibClient implements ClientModInitializer {
 	/**
@@ -26,6 +22,7 @@ public class FabricShieldLibClient implements ClientModInitializer {
 	public static final Identifier FABRIC_BANNER_SHIELD_MODEL_TYPE =
 		Identifier.of(FabricShieldLib.MOD_ID, "fabric_banner_shield");
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onInitializeClient() {
 		/*
@@ -42,17 +39,23 @@ public class FabricShieldLibClient implements ClientModInitializer {
 		 * ItemStack.getTooltip()
 		 */
 		ItemTooltipCallback.EVENT.register((stack, context, type, tooltip) -> {
+			if (stack.get(DataComponentTypes.BLOCKS_ATTACKS) == null)
+				return;
+
 			if (!FabricShieldLibConfig.enable_tooltips)
 				return;
 
-			boolean displayTooltip = !stack.isIn(FabricShieldTags.NO_TOOLTIP);
+			if (!stack.isIn(FabricShieldTags.NO_TOOLTIP))
+				return;
 
-			// Display tooltip for shields
-			BlocksAttacksComponent shield = stack.get(DataComponentTypes.BLOCKS_ATTACKS);
-			if (shield != null && displayTooltip) {
-				getCooldownTooltip(stack, type, tooltip, (int) (100.0F * shield.disableCooldownScale()));
-			}
+			BlockAttacksTooltip.removeTooltip(tooltip);
 		});
+
+		// Register our own tooltips for DataComponentTypes.BLOCKS_ATTACKS
+		ComponentTooltipAppenderRegistry.addAfter(
+			DataComponentTypes.DAMAGE,
+			(ComponentType<? extends TooltipAppender>) (Object) DataComponentTypes.BLOCKS_ATTACKS
+		);
 
 		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			// Warn about dev code
@@ -61,96 +64,5 @@ public class FabricShieldLibClient implements ClientModInitializer {
 
 			FabricShieldLibClientTests.runTests();
 		}
-	}
-
-	/**
-	 * Shield tooltip thing.
-	 */
-	public static List<Text> getCooldownTooltip(ItemStack stack, TooltipType type, List<Text> tooltip, int cooldownTicks) {
-		List<Text> advanced = new ArrayList<Text>();
-
-		/*
-		 * These all loop in reverse to grab the first instance of a match at the end of
-		 * the tooltip
-		 */
-		if (type.isAdvanced()) {
-			// Grab durability
-			if (stack.isDamaged()) {
-				for (int i = tooltip.size() - 1; i > 0; i--) {
-
-					Text text = tooltip.get(i);
-					String strText = text.getString();
-
-					if (strText.startsWith("Durability")) {
-						advanced.add(text);
-						tooltip.remove(i);
-						break;
-					}
-				}
-			}
-
-			// Grab item id
-			for (int i = tooltip.size() - 1; i > 0; i--) {
-
-				Text text = tooltip.get(i);
-				String strText = text.getString().trim();
-
-				if (Identifier.isNamespaceValid(strText)) { // not sure if isnamespacevalid or ispathvalid
-					advanced.add(text);
-					tooltip.remove(i);
-					break;
-				}
-			}
-
-			// Grab nbt string
-			if (!stack.getComponents().isEmpty()) {
-				for (int i = tooltip.size() - 1; i > 0; i--) {
-
-					Text text = tooltip.get(i);
-					String strText = text.getString();
-
-					if (strText.startsWith("NBT: ")) {
-						advanced.add(text);
-						tooltip.remove(i);
-						break;
-					}
-				}
-			}
-		}
-
-		// Add disabled cooldown tooltip
-		tooltip.add(Text.literal(""));
-		tooltip.add(Text.translatable("fabricshieldlib.shield_tooltip.start")
-			.append(Text.literal(":"))
-			.formatted(Formatting.GRAY)
-		);
-
-		/*
-		 * All of this is so if there is a .0 instead of there being a need for a
-		 * decimal remove the .0
-		 */
-		String cooldown = String.valueOf((Double) (cooldownTicks / 20.0));
-		char[] splitCooldown = cooldown.toCharArray();
-		if (splitCooldown.length >= 3) {
-			if (splitCooldown[2] == '0') {
-				if (!(splitCooldown.length >= 4)) {
-					cooldown = String.valueOf(splitCooldown[0]);
-				}
-			}
-		}
-
-		tooltip.add(Text.literal(" " + cooldown)
-			.formatted(Formatting.DARK_GREEN)
-			.append(Text.translatable("fabricshieldlib.shield_tooltip.unit"))
-			.append(" ")
-			.append(Text.translatable("fabricshieldlib.shield_tooltip.end"))
-		);
-
-		// Append advanced info
-		if (type.isAdvanced()) {
-			tooltip.addAll(advanced);
-		}
-
-		return tooltip;
 	}
 }
