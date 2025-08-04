@@ -1,5 +1,7 @@
-{   
+{
     "fabricshieldlib.midnightconfig.title": "Fabric Shield Lib Config",
+    "fabricshieldlib.midnightconfig.category.general": "General",
+    "fabricshieldlib.midnightconfig.category.tooltip": "Tooltip",
     "fabricshieldlib.midnightconfig.enable_tooltips":"Enable shield tooltips",
     "fabricshieldlib.midnightconfig.allow_vanilla_shield_enchanting":"Allow vanilla shield enchanting",
     "fabricshieldlib.midnightconfig.enchantability_convention": "Convention: 15 = Wood || 5 = Stone || 14 = Iron || 10 = Diamond || 22 = Gold",
@@ -7,6 +9,21 @@
     "fabricshieldlib.midnightconfig.universal_disable":"Universal Shield Disabling",
     "fabricshieldlib.midnightconfig.universal_disable_description_1":"If on, whenever any shield gets disabled, every type of shield will be disabled.",
     "fabricshieldlib.midnightconfig.universal_disable_description_2":"If off, then disabling a shield will only disable shields of the same type",
+
+    "fabricshieldlib.midnightconfig.complex_tooltip":"Complex Tooltips - Enable to customize",
+    "fabricshieldlib.midnightconfig.block_delay_seconds":"Block Delay Seconds - The amount of time (in seconds) that use must be held before successfully blocking attacks.",
+    "fabricshieldlib.midnightconfig.cooldown_ticks":"Cooldown Ticks - The amount of in-game ticks a shield go on cooldown when disabled by and axe",
+    "fabricshieldlib.midnightconfig.damage_reduction_type":"Damage Reduction Types - Any number of damage type(s) to block.",
+    "fabricshieldlib.midnightconfig.damage_reduction_base":"Damage Reduction Base - The constant amount of damage to be blocked.",
+    "fabricshieldlib.midnightconfig.damage_reduction_percent":"Damage Reduction Percent - The percent of the dealt damage to be blocked.",
+    "fabricshieldlib.midnightconfig.damage_reduction_blocking_angle":"Damage Reduction Blocking Angle — The maximum angle between the users facing direction and the direction of the incoming attack to be blocked.",
+    "fabricshieldlib.midnightconfig.item_damage_threshold":"Item Damage Threshold - The minimum amount of damage dealt by the attack before item damage is applied to the item",
+    "fabricshieldlib.midnightconfig.item_damage_base":"Item Damage Base - The constant amount of damage applied to the item, if threshold is passed.",
+    "fabricshieldlib.midnightconfig.item_damage_percent":"Item Damage Percent: The percent of the dealt damage that should be applied to the item, if threshold is passed.",
+    "fabricshieldlib.midnightconfig.block_sound":"Block Sound",
+    "fabricshieldlib.midnightconfig.disabled_sound":"Disable Sound",
+    "fabricshieldlib.midnightconfig.bypassed_by":"Bypassed By",
+
     "fabricshieldlib.shield_tooltip.start":"When Hit by Axe",
     "fabricshieldlib.shield_tooltip.unit":"s",
     "fabricshieldlib.shield_tooltip.end":"Cooldown"
